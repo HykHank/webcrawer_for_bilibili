@@ -10,12 +10,15 @@ from moviepy.editor import VideoFileClip, AudioFileClip\
 
 
 class Crawl:
-    __url = 'https://www.bilibili.com'
-    __headers = {
-                    'User-Agent':'Mozilla/50(Windows NT 11.0; win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0',
-                    'referer':__url,
-                    'Cookie':""
-                }
+    def __init__(self,cookies):
+        __url = 'https://www.bilibili.com'
+        __headers = {
+                        'User-Agent':'Mozilla/50(Windows NT 11.0; win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0',
+                        'referer':__url,
+                        'Cookie':cookies
+                    }
+        self.__url = __url
+        self.__headers = __headers
         
     def get_json(self):
         url = self.__url
@@ -58,7 +61,9 @@ class Crawl:
 if __name__ == '__main__':
     bvid = input('请输入视频BV号,如有多个请用逗号分隔\n').split(',')
     urls = []
-    c = Crawl()
+    with open('cookie.txt','r') as cookie:
+        cookies = cookie.read()
+    c = Crawl(cookies)
     for i in bvid:
         video_url = 'https://www.bilibili.com/video/'+i
         print('即将提取的视频链接为:',video_url)
